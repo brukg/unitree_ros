@@ -12,6 +12,9 @@
   <depend>robot_state_publisher</depend>
   <depend>rviz</depend>
   <depend>joint_state_publisher_gui</depend>
-  <depend>gazebo</depend>
+  <depend>gz</depend>
 
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>
