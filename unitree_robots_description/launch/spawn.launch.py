@@ -5,6 +5,11 @@ from launch_ros.actions import Node
 import launch_ros
 import os
 import xacro
+import launch
+from launch.actions import ExecuteProcess
+from launch.substitutions import FindExecutable
+from launch.actions import RegisterEventHandler
+from launch.event_handlers import OnProcessExit
 
 def generate_launch_description():
     pkg_share = launch_ros.substitutions.FindPackageShare(
@@ -31,6 +36,11 @@ def generate_launch_description():
         name="joint_state_publisher",
         output="screen",
     )
+    gazebo =  ExecuteProcess(
+            cmd=['ruby', FindExecutable(name="gz"), 'sim',  '-r', "empty.sdf", '--force-version', '8'],
+            output='screen',
+            shell=False,
+        )
     spawn_entity = Node(
         package="ros_gz_sim",
         executable="create",
@@ -49,6 +59,37 @@ def generate_launch_description():
         ],
     )
   
+    joint_state_broadcaster_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
+    )
+
+    robot_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_trajectory_controller", "-c", "/controller_manager"],
+    )
+
+    effort_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["effort_controller", "-c", "/controller_manager"],
+    )
+
+    spawn_entity_finished = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=spawn_entity,
+            on_exit=[joint_state_broadcaster_spawner]
+        )
+    )
+
+    joint_state_broadcaster_finished = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=joint_state_broadcaster_spawner,
+            on_exit=[robot_controller_spawner, effort_controller_spawner]
+        )
+    )
 
     return LaunchDescription(
       [ 
@@ -59,7 +100,9 @@ def generate_launch_description():
             choices=["h1", "a1", "b1"],
         ),
         robot_state_publisher_node,
-        joint_state_publisher,
+        gazebo,
         spawn_entity,
+        spawn_entity_finished,
+        joint_state_broadcaster_finished
       ]
     )

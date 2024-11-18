@@ -3,37 +3,33 @@
 
   <ros2_control name="gz_ros2_control/GazeboSimSystem" type="system">
     <hardware>
-      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+      <plugin>fake_components/GenericSystem</plugin>
     </hardware>
 
     <joint name="left_hip_yaw_joint">
-      <command_interface name="effort">
-        <param name="effort">33.5</param>
-      </command_interface>
+      <command_interface name="position"/>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
-      <state_interface name="effort"/>
     </joint>
     <joint name="left_hip_roll_joint">
-      <command_interface name="effort">
-        <param name="effort">33.5</param>
+      <command_interface name="position">
+        <param name="min">0</param>
+        <param name="max">1.0</param>
       </command_interface>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
     </joint>
     <joint name="left_hip_pitch_joint">
-      <command_interface name="effort">
-        <param name="effort">33.5</param>
+      <command_interface name="position">
+        <param name="min">0</param>
+        <param name="max">1.0</param>
       </command_interface>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
     </joint>
     <joint name="left_knee_joint">
-      <command_interface name="effort">
-        <param name="effort">33.5</param>
-      </command_interface>
       <command_interface name="position">
         <param name="min">0</param>
         <param name="max">1.0</param>
@@ -43,41 +39,39 @@
       <state_interface name="effort"/>
     </joint>
     <joint name="left_ankle_joint">
-      <command_interface name="effort">
-        <param name="effort">33.5</param>
+      <command_interface name="position">
+        <param name="min">-3.054</param>
+        <param name="max">3.054</param>
       </command_interface>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
     </joint>
     <joint name="right_hip_yaw_joint">
-      <command_interface name="effort">
-        <param name="effort">33.5</param>
-      </command_interface>
+      <command_interface name="position"/>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
     </joint>
     <joint name="right_hip_roll_joint">
-      <command_interface name="effort">
-        <param name="effort">33.5</param>
+      <command_interface name="position">
+        <param name="min">0</param>
+        <param name="max">1.0</param>
       </command_interface>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
     </joint>
     <joint name="right_hip_pitch_joint">
-      <command_interface name="effort">
-        <param name="effort">33.5</param>
+      <command_interface name="position">
+        <param name="min">0</param>
+        <param name="max">1.0</param>
       </command_interface>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
     </joint>
     <joint name="right_knee_joint">
-      <command_interface name="effort">
-        <param name="effort">33.5</param>
-      </command_interface>
       <command_interface name="position">
         <param name="min">0</param>
         <param name="max">1.0</param>
@@ -87,28 +81,30 @@
       <state_interface name="effort"/>
     </joint>
     <joint name="right_ankle_joint">
-      <command_interface name="effort">
-        <param name="effort">33.5</param>
+      <command_interface name="position">
+        <param name="min">-3.054</param>
+        <param name="max">3.054</param>
       </command_interface>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
     </joint>
     <joint name="torso_joint">
-      <command_interface name="effort">
-        <param name="effort">33.5</param>
+      <command_interface name="position">
+        <param name="min">-2.35</param>
+        <param name="max">2.35</param>
       </command_interface>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
     </joint>
     <joint name="left_shoulder_pitch_joint">
-      <command_interface name="effort">
-        <param name="effort">33.5</param>
-      </command_interface>
       <command_interface name="position">
         <param name="min">0</param>
         <param name="max">1.0</param>
+      </command_interface>
+      <command_interface name="effort">
+        <param name="effort">33.5</param>
       </command_interface>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
@@ -174,8 +170,55 @@
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
     </joint>
+    <joint name="left_elbow_joint">
+      <command_interface name="position">
+        <param name="min">-1.25</param>
+        <param name="max">2.61</param>
+      </command_interface>
+      <command_interface name="effort">
+        <param name="effort">18.0</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="left_hand_joint">
+      <command_interface name="position">
+        <param name="min">-3.054</param>
+        <param name="max">3.054</param>
+      </command_interface>
+      <command_interface name="effort">
+        <param name="effort">6.0</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="right_elbow_joint">
+      <command_interface name="position">
+        <param name="min">-1.25</param>
+        <param name="max">2.61</param>
+      </command_interface>
+      <command_interface name="effort">
+        <param name="effort">18.0</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="right_hand_joint">
+      <command_interface name="position">
+        <param name="min">-3.054</param>
+        <param name="max">3.054</param>
+      </command_interface>
+      <command_interface name="effort">
+        <param name="effort">6.0</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
   </ros2_control>
-
 
   <gazebo>
     <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
