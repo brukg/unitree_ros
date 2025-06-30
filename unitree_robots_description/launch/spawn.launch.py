@@ -30,24 +30,24 @@ def generate_launch_description():
     # Launch arguments
     model_arg = DeclareLaunchArgument(
         name="model",
-        default_value="g1",
+        default_value="g1_simple",
         description="unitree robot model name",
-        choices=["h1", "a1", "b1", "g1"],
+        choices=["h1", "a1", "b1", "g1", "g1_simple"],
     )
     model = LaunchConfiguration("model")
     
     # Robot URDF path based on model
     robot_urdf = PythonExpression([
-        "'", pkg_share, "/models/", model, "/",
-        model, "_29dof_with_control.urdf.xacro' if '", model, "' == 'g1' else '",
+        "'", pkg_share, "/models/g1/g1_29dof_with_control.urdf.xacro' if '", model, "' == 'g1' else '",
+        pkg_share, "/models/g1/g1_simple_hand_with_control.urdf.xacro' if '", model, "' == 'g1_simple' else '",
         pkg_share, "/models/", model, "/", model, ".urdf'"
     ])
     
     # Control config path based on model  
-    control_config = PathJoinSubstitution([
-        launch_ros.substitutions.FindPackageShare("unitree_robots_description"),
-        "config", 
-        PythonExpression(["'", model, "_control.yaml'"])
+    control_config = PythonExpression([
+        "'", pkg_share, "/config/g1_control.yaml' if '", model, "' == 'g1' else '",
+        pkg_share, "/config/g1_simple_hand_control.yaml' if '", model, "' == 'g1_simple' else '",
+        pkg_share, "/config/", model, "_control.yaml'"
     ])
 
     desc = Command(["xacro ", robot_urdf])
@@ -125,16 +125,34 @@ def generate_launch_description():
         arguments=["right_wrist_controller", "-c", "/controller_manager"],
     )
     
+    # G1 with inspire hands - finger controllers
     left_fingers_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
         arguments=["left_fingers_controller", "-c", "/controller_manager"],
+        condition=IfCondition(PythonExpression(["'", model, "' == 'g1'"]))
     )
     
     right_fingers_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
         arguments=["right_fingers_controller", "-c", "/controller_manager"],
+        condition=IfCondition(PythonExpression(["'", model, "' == 'g1'"]))
+    )
+    
+    # G1 with simple hands - simple hand controllers
+    left_simple_hand_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["left_simple_hand_controller", "-c", "/controller_manager"],
+        condition=IfCondition(PythonExpression(["'", model, "' == 'g1_simple'"]))
+    )
+    
+    right_simple_hand_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["right_simple_hand_controller", "-c", "/controller_manager"],
+        condition=IfCondition(PythonExpression(["'", model, "' == 'g1_simple'"]))
     )
 
     # Event handlers for sequential controller spawning
@@ -154,8 +172,10 @@ def generate_launch_description():
                 right_arm_controller_spawner,
                 left_wrist_controller_spawner, 
                 right_wrist_controller_spawner,
-                left_fingers_controller_spawner, 
-                right_fingers_controller_spawner
+                left_fingers_controller_spawner,      # G1 inspire hands
+                right_fingers_controller_spawner,     # G1 inspire hands
+                left_simple_hand_controller_spawner,  # G1 simple hands
+                right_simple_hand_controller_spawner  # G1 simple hands
             ]
         )
     )

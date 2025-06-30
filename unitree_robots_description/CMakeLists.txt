@@ -14,6 +14,7 @@ install(
 install(
   PROGRAMS
     scripts/test_g1_control.py
+    scripts/test_g1_simple_hand_control.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

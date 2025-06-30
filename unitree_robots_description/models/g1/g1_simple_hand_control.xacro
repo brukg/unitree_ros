@@ -1,0 +1,413 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- ROS2 Control configuration for G1 with simple hands (28 joints) -->
+  <ros2_control name="g1_simple_hand_system" type="system">
+    <hardware>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+    </hardware>
+
+    <!-- Lower Body Joints (15 joints) -->
+    <joint name="left_hip_pitch_joint">
+      <command_interface name="position">
+        <param name="min">-2.5307</param>
+        <param name="max">2.8798</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="left_hip_roll_joint">
+      <command_interface name="position">
+        <param name="min">-0.5236</param>
+        <param name="max">2.9671</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="left_hip_yaw_joint">
+      <command_interface name="position">
+        <param name="min">-2.7576</param>
+        <param name="max">2.7576</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="left_knee_joint">
+      <command_interface name="position">
+        <param name="min">-0.087267</param>
+        <param name="max">2.8798</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="left_ankle_pitch_joint">
+      <command_interface name="position">
+        <param name="min">-0.87267</param>
+        <param name="max">0.5236</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="left_ankle_roll_joint">
+      <command_interface name="position">
+        <param name="min">-0.2618</param>
+        <param name="max">0.2618</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="right_hip_pitch_joint">
+      <command_interface name="position">
+        <param name="min">-2.5307</param>
+        <param name="max">2.8798</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="right_hip_roll_joint">
+      <command_interface name="position">
+        <param name="min">-2.9671</param>
+        <param name="max">0.5236</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="right_hip_yaw_joint">
+      <command_interface name="position">
+        <param name="min">-2.7576</param>
+        <param name="max">2.7576</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="right_knee_joint">
+      <command_interface name="position">
+        <param name="min">-0.087267</param>
+        <param name="max">2.8798</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="right_ankle_pitch_joint">
+      <command_interface name="position">
+        <param name="min">-0.87267</param>
+        <param name="max">0.5236</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="right_ankle_roll_joint">
+      <command_interface name="position">
+        <param name="min">-0.2618</param>
+        <param name="max">0.2618</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="waist_yaw_joint">
+      <command_interface name="position">
+        <param name="min">-2.618</param>
+        <param name="max">2.618</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="waist_roll_joint">
+      <command_interface name="position">
+        <param name="min">-0.52</param>
+        <param name="max">0.52</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="waist_pitch_joint">
+      <command_interface name="position">
+        <param name="min">-0.52</param>
+        <param name="max">0.52</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <!-- Left Arm Joints (4 joints) -->
+    <joint name="left_shoulder_pitch_joint">
+      <command_interface name="position">
+        <param name="min">-3.0892</param>
+        <param name="max">2.6704</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="left_shoulder_roll_joint">
+      <command_interface name="position">
+        <param name="min">-1.5882</param>
+        <param name="max">2.2515</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="left_shoulder_yaw_joint">
+      <command_interface name="position">
+        <param name="min">-2.618</param>
+        <param name="max">2.618</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="left_elbow_joint">
+      <command_interface name="position">
+        <param name="min">-1.0472</param>
+        <param name="max">2.0944</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <!-- Right Arm Joints (4 joints) -->
+    <joint name="right_shoulder_pitch_joint">
+      <command_interface name="position">
+        <param name="min">-3.0892</param>
+        <param name="max">2.6704</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="right_shoulder_roll_joint">
+      <command_interface name="position">
+        <param name="min">-2.2515</param>
+        <param name="max">1.5882</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="right_shoulder_yaw_joint">
+      <command_interface name="position">
+        <param name="min">-2.618</param>
+        <param name="max">2.618</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="right_elbow_joint">
+      <command_interface name="position">
+        <param name="min">-1.0472</param>
+        <param name="max">2.0944</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <!-- Left Wrist Joints (3 joints) -->
+    <joint name="left_wrist_roll_joint">
+      <command_interface name="position">
+        <param name="min">-1.972222054</param>
+        <param name="max">1.972222054</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="left_wrist_pitch_joint">
+      <command_interface name="position">
+        <param name="min">-1.614429558</param>
+        <param name="max">1.614429558</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="left_wrist_yaw_joint">
+      <command_interface name="position">
+        <param name="min">-1.614429558</param>
+        <param name="max">1.614429558</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <!-- Right Wrist Joints (3 joints) -->
+    <joint name="right_wrist_roll_joint">
+      <command_interface name="position">
+        <param name="min">-1.972222054</param>
+        <param name="max">1.972222054</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="right_wrist_pitch_joint">
+      <command_interface name="position">
+        <param name="min">-1.614429558</param>
+        <param name="max">1.614429558</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="right_wrist_yaw_joint">
+      <command_interface name="position">
+        <param name="min">-1.614429558</param>
+        <param name="max">1.614429558</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <!-- Left Simple Hand Joints (7 joints) -->
+    <joint name="left_hand_thumb_0_joint">
+      <command_interface name="position">
+        <param name="min">-1.04719755</param>
+        <param name="max">1.04719755</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="left_hand_thumb_1_joint">
+      <command_interface name="position">
+        <param name="min">-0.61086523</param>
+        <param name="max">1.04719755</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="left_hand_thumb_2_joint">
+      <command_interface name="position">
+        <param name="min">0</param>
+        <param name="max">1.74532925</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="left_hand_index_0_joint">
+      <command_interface name="position">
+        <param name="min">-1.57079632</param>
+        <param name="max">0</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="left_hand_index_1_joint">
+      <command_interface name="position">
+        <param name="min">-1.74532925</param>
+        <param name="max">0</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="left_hand_middle_0_joint">
+      <command_interface name="position">
+        <param name="min">-1.57079632</param>
+        <param name="max">0</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="left_hand_middle_1_joint">
+      <command_interface name="position">
+        <param name="min">-1.74532925</param>
+        <param name="max">0</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <!-- Right Simple Hand Joints (7 joints) -->
+    <joint name="right_hand_thumb_0_joint">
+      <command_interface name="position">
+        <param name="min">-1.04719755</param>
+        <param name="max">1.04719755</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="right_hand_thumb_1_joint">
+      <command_interface name="position">
+        <param name="min">-1.04719755</param>
+        <param name="max">0.61086523</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="right_hand_thumb_2_joint">
+      <command_interface name="position">
+        <param name="min">-1.74532925</param>
+        <param name="max">0</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="right_hand_index_0_joint">
+      <command_interface name="position">
+        <param name="min">0</param>
+        <param name="max">1.57079632</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="right_hand_index_1_joint">
+      <command_interface name="position">
+        <param name="min">0</param>
+        <param name="max">1.74532925</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="right_hand_middle_0_joint">
+      <command_interface name="position">
+        <param name="min">0</param>
+        <param name="max">1.57079632</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="right_hand_middle_1_joint">
+      <command_interface name="position">
+        <param name="min">0</param>
+        <param name="max">1.74532925</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+  </ros2_control>
+
+  <!-- Gazebo plugins -->
+  <gazebo>
+    <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <parameters>$(find unitree_robots_description)/config/g1_simple_hand_control.yaml</parameters>
+    </plugin>
+  </gazebo>
+
+</robot> 

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<robot name="g1_simple_hand_with_control" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Include the simple hand G1 model -->
+  <xacro:include filename="$(find unitree_robots_description)/models/g1/g1_29dof_with_hand.urdf"/>
+
+  <!-- Include the ROS2 control configuration for simple hands -->
+  <xacro:include filename="$(find unitree_robots_description)/models/g1/g1_simple_hand_control.xacro"/>
+
+</robot> 
