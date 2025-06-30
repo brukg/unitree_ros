@@ -114,7 +114,6 @@ class G1ControllerTest(Node):
         """Create a trajectory goal for action client"""
         goal = FollowJointTrajectory.Goal()
         
-        goal.trajectory.header.stamp = self.get_clock().now().to_msg()
         goal.trajectory.joint_names = joint_names
         
         point = JointTrajectoryPoint()
