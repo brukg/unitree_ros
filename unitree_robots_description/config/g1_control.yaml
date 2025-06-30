@@ -1,0 +1,284 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 1000  # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+    
+    lower_body_controller:
+      type: "joint_trajectory_controller/JointTrajectoryController"
+
+    left_arm_controller:
+      type: "joint_trajectory_controller/JointTrajectoryController"
+
+    right_arm_controller:
+      type: "joint_trajectory_controller/JointTrajectoryController"
+
+    left_wrist_controller:
+      type: "joint_trajectory_controller/JointTrajectoryController"
+
+    right_wrist_controller:
+      type: "joint_trajectory_controller/JointTrajectoryController"
+
+    left_fingers_controller:
+      type: "joint_trajectory_controller/JointTrajectoryController"
+
+    right_fingers_controller:
+      type: "joint_trajectory_controller/JointTrajectoryController"
+
+
+lower_body_controller:
+  ros__parameters:  
+    joints:
+      # Leg joints (position control)
+      - left_hip_pitch_joint
+      - left_hip_roll_joint
+      - left_hip_yaw_joint
+      - left_knee_joint
+      - left_ankle_pitch_joint
+      - left_ankle_roll_joint
+      - right_hip_pitch_joint
+      - right_hip_roll_joint
+      - right_hip_yaw_joint
+      - right_knee_joint
+      - right_ankle_pitch_joint
+      - right_ankle_roll_joint
+      # Waist joints (position control)
+      - waist_yaw_joint
+      - waist_roll_joint
+      - waist_pitch_joint
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+
+    allow_partial_joints_goal: true
+    open_loop_control: true
+    constraints:
+      goal_time: 0.0
+      # Left leg constraints
+      left_hip_pitch_joint: {trajectory: 0.05, goal: 0.03}
+      left_hip_roll_joint: {trajectory: 0.05, goal: 0.03}
+      left_hip_yaw_joint: {trajectory: 0.05, goal: 0.03}
+      left_knee_joint: {trajectory: 0.05, goal: 0.03}
+      left_ankle_pitch_joint: {trajectory: 0.05, goal: 0.03}
+      left_ankle_roll_joint: {trajectory: 0.05, goal: 0.03}
+      # Right leg constraints
+      right_hip_pitch_joint: {trajectory: 0.05, goal: 0.03}
+      right_hip_roll_joint: {trajectory: 0.05, goal: 0.03}
+      right_hip_yaw_joint: {trajectory: 0.05, goal: 0.03}
+      right_knee_joint: {trajectory: 0.05, goal: 0.03}
+      right_ankle_pitch_joint: {trajectory: 0.05, goal: 0.03}
+      right_ankle_roll_joint: {trajectory: 0.05, goal: 0.03}
+      # Waist constraints
+      waist_yaw_joint: {trajectory: 0.05, goal: 0.03}
+      waist_roll_joint: {trajectory: 0.05, goal: 0.03}
+      waist_pitch_joint: {trajectory: 0.05, goal: 0.03}
+
+left_arm_controller:
+  ros__parameters:
+    joints:
+      # Left arm joints (position control)
+      - left_shoulder_pitch_joint
+      - left_shoulder_roll_joint
+      - left_shoulder_yaw_joint
+      - left_elbow_joint
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+
+    allow_partial_joints_goal: true
+    open_loop_control: true
+    constraints:
+      goal_time: 0.0
+      # Left arm constraints
+      left_shoulder_pitch_joint: {trajectory: 0.05, goal: 0.03}
+      left_shoulder_roll_joint: {trajectory: 0.05, goal: 0.03}
+      left_shoulder_yaw_joint: {trajectory: 0.05, goal: 0.03}
+      left_elbow_joint: {trajectory: 0.05, goal: 0.03}
+
+right_arm_controller:
+  ros__parameters:
+    joints:
+      # Right arm joints (position control)
+      - right_shoulder_pitch_joint
+      - right_shoulder_roll_joint
+      - right_shoulder_yaw_joint
+      - right_elbow_joint
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+
+    allow_partial_joints_goal: true
+    open_loop_control: true
+    constraints:
+      goal_time: 0.0
+      # Right arm constraints
+      right_shoulder_pitch_joint: {trajectory: 0.05, goal: 0.03}
+      right_shoulder_roll_joint: {trajectory: 0.05, goal: 0.03}
+      right_shoulder_yaw_joint: {trajectory: 0.05, goal: 0.03}
+      right_elbow_joint: {trajectory: 0.05, goal: 0.03}
+
+left_wrist_controller:
+  ros__parameters:
+    joints:
+      # Left wrist joints (position control)
+      - left_wrist_roll_joint
+      - left_wrist_pitch_joint
+      - left_wrist_yaw_joint
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+
+    allow_partial_joints_goal: true
+    open_loop_control: true
+    constraints:
+      goal_time: 0.0
+      # Left wrist constraints
+      left_wrist_roll_joint: {trajectory: 0.05, goal: 0.03}
+      left_wrist_pitch_joint: {trajectory: 0.05, goal: 0.03}
+      left_wrist_yaw_joint: {trajectory: 0.05, goal: 0.03}
+
+right_wrist_controller:
+  ros__parameters:
+    joints:
+      # Right wrist joints (position control)
+      - right_wrist_roll_joint
+      - right_wrist_pitch_joint
+      - right_wrist_yaw_joint
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+
+    allow_partial_joints_goal: true
+    open_loop_control: true
+    constraints:
+      goal_time: 0.0
+      # Right wrist constraints
+      right_wrist_roll_joint: {trajectory: 0.05, goal: 0.03}
+      right_wrist_pitch_joint: {trajectory: 0.05, goal: 0.03}
+      right_wrist_yaw_joint: {trajectory: 0.05, goal: 0.03}
+
+left_fingers_controller:
+  ros__parameters:
+    joints:
+      # Left hand finger joints
+      - left_thumb_1_joint
+      - left_thumb_2_joint
+      - left_thumb_3_joint
+      - left_thumb_4_joint
+      - left_index_1_joint
+      - left_index_2_joint
+      - left_middle_1_joint
+      - left_middle_2_joint
+      - left_ring_1_joint
+      - left_ring_2_joint
+      - left_little_1_joint
+      - left_little_2_joint
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+
+    allow_partial_joints_goal: true
+    open_loop_control: true
+    constraints:
+      goal_time: 0.0
+      # Left hand finger constraints
+      left_thumb_1_joint: {trajectory: 0.05, goal: 0.03}
+      left_thumb_2_joint: {trajectory: 0.05, goal: 0.03}
+      left_thumb_3_joint: {trajectory: 0.05, goal: 0.03}
+      left_thumb_4_joint: {trajectory: 0.05, goal: 0.03}
+      left_index_1_joint: {trajectory: 0.05, goal: 0.03}
+      left_index_2_joint: {trajectory: 0.05, goal: 0.03}
+      left_middle_1_joint: {trajectory: 0.05, goal: 0.03}
+      left_middle_2_joint: {trajectory: 0.05, goal: 0.03}
+      left_ring_1_joint: {trajectory: 0.05, goal: 0.03}
+      left_ring_2_joint: {trajectory: 0.05, goal: 0.03}
+      left_little_1_joint: {trajectory: 0.05, goal: 0.03}
+      left_little_2_joint: {trajectory: 0.05, goal: 0.03}
+
+right_fingers_controller:
+  ros__parameters:
+    joints:
+      # Right hand finger joints
+      - right_thumb_1_joint
+      - right_thumb_2_joint
+      - right_thumb_3_joint
+      - right_thumb_4_joint
+      - right_index_1_joint
+      - right_index_2_joint
+      - right_middle_1_joint
+      - right_middle_2_joint
+      - right_ring_1_joint
+      - right_ring_2_joint
+      - right_little_1_joint
+      - right_little_2_joint
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+
+    allow_partial_joints_goal: true
+    open_loop_control: true
+    constraints:
+      goal_time: 0.0
+      # Right hand finger constraints
+      right_thumb_1_joint: {trajectory: 0.05, goal: 0.03}
+      right_thumb_2_joint: {trajectory: 0.05, goal: 0.03}
+      right_thumb_3_joint: {trajectory: 0.05, goal: 0.03}
+      right_thumb_4_joint: {trajectory: 0.05, goal: 0.03}
+      right_index_1_joint: {trajectory: 0.05, goal: 0.03}
+      right_index_2_joint: {trajectory: 0.05, goal: 0.03}
+      right_middle_1_joint: {trajectory: 0.05, goal: 0.03}
+      right_middle_2_joint: {trajectory: 0.05, goal: 0.03}
+      right_ring_1_joint: {trajectory: 0.05, goal: 0.03}
+      right_ring_2_joint: {trajectory: 0.05, goal: 0.03}
+      right_little_1_joint: {trajectory: 0.05, goal: 0.03}
+      right_little_2_joint: {trajectory: 0.05, goal: 0.03} 

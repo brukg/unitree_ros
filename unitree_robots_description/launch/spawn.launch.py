@@ -1,6 +1,6 @@
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration, Command
+from launch.substitutions import LaunchConfiguration, Command, PathJoinSubstitution, PythonExpression
 from launch_ros.actions import Node
 import launch_ros
 import os
@@ -10,73 +10,134 @@ from launch.actions import ExecuteProcess
 from launch.substitutions import FindExecutable
 from launch.actions import RegisterEventHandler
 from launch.event_handlers import OnProcessExit
+from launch.actions import IncludeLaunchDescription
+from launch.conditions import IfCondition
+from launch.actions import AppendEnvironmentVariable
+from os.path import join
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from ament_index_python.packages import get_package_share_directory
+
+
+gz_version = 6
+# gz_version = PythonExpression(["$0", " == 6 or ", "$0", " == 7 or ", "$0", " == 8"])
 
 def generate_launch_description():
     pkg_share = launch_ros.substitutions.FindPackageShare(
         package="unitree_robots_description"
     ).find("unitree_robots_description")
+    gz_sim_share = get_package_share_directory("ros_gz_sim")
+    
+    # Launch arguments
+    model_arg = DeclareLaunchArgument(
+        name="model",
+        default_value="g1",
+        description="unitree robot model name",
+        choices=["h1", "a1", "b1", "g1"],
+    )
+    model = LaunchConfiguration("model")
+    
+    # Robot URDF path based on model
+    robot_urdf = PythonExpression([
+        "'", pkg_share, "/models/", model, "/",
+        model, "_29dof_with_control.urdf.xacro' if '", model, "' == 'g1' else '",
+        pkg_share, "/models/", model, "/", model, ".urdf'"
+    ])
+    
+    # Control config path based on model  
+    control_config = PathJoinSubstitution([
+        launch_ros.substitutions.FindPackageShare("unitree_robots_description"),
+        "config", 
+        PythonExpression(["'", model, "_control.yaml'"])
+    ])
 
-    model = LaunchConfiguration("model", default="h1")
-    
-    robot = os.path.join(pkg_share, "models/h1/urdf/robot.urdf")
-    desc = xacro.parse(open(robot))
-    xacro.process_doc(desc)
-    
+    desc = Command(["xacro ", robot_urdf])
+
+    gz_sim_resource_path = AppendEnvironmentVariable(
+    name='GZ_SIM_RESOURCE_PATH' if gz_version == 7 or gz_version == 8 else 'IGN_GAZEBO_RESOURCE_PATH',
+    value=join(pkg_share, "models"))
     
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
         parameters=[
-            {'robot_description': desc.toxml()}
+            {'robot_description': desc}
         ],
     )
-    joint_state_publisher = Node(
-        package="joint_state_publisher",
-        executable="joint_state_publisher",
-        name="joint_state_publisher",
-        output="screen",
-    )
-    gazebo =  ExecuteProcess(
-            cmd=['ruby', FindExecutable(name="gz"), 'sim',  '-r', "empty.sdf", '--force-version', '8'],
-            output='screen',
-            shell=False,
-        )
+    
     spawn_entity = Node(
         package="ros_gz_sim",
         executable="create",
         output="screen",
         arguments=[
             "-name",
-            "h1_robot",
+            PythonExpression(["'", model, "_robot'"]),
             "-topic",
             "robot_description",
             "-x",
             "0.0",
-            "-y",
+            "-y", 
             "0.0",
             "-z",
-            "1.50",
+            "1.250",
         ],
     )
-  
+    
+    gz_sim = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(join(gz_sim_share, "launch", "gz_sim.launch.py")),
+        launch_arguments={
+            'gz_args': ["empty.sdf"," -r"],
+        }.items(),
+    )
+    
     joint_state_broadcaster_spawner = Node(
         package="controller_manager",
         executable="spawner",
         arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
     )
 
-    robot_controller_spawner = Node(
+    lower_body_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_trajectory_controller", "-c", "/controller_manager"],
+        arguments=["lower_body_controller", "-c", "/controller_manager"],
     )
 
-    effort_controller_spawner = Node(
+    left_arm_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["effort_controller", "-c", "/controller_manager"],
+        arguments=["left_arm_controller", "-c", "/controller_manager"],
     )
 
+    right_arm_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["right_arm_controller", "-c", "/controller_manager"],
+    )
+    
+    left_wrist_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["left_wrist_controller", "-c", "/controller_manager"],
+    )
+    
+    right_wrist_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["right_wrist_controller", "-c", "/controller_manager"],
+    )
+    
+    left_fingers_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["left_fingers_controller", "-c", "/controller_manager"],
+    )
+    
+    right_fingers_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["right_fingers_controller", "-c", "/controller_manager"],
+    )
+
+    # Event handlers for sequential controller spawning
     spawn_entity_finished = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=spawn_entity,
@@ -87,20 +148,24 @@ def generate_launch_description():
     joint_state_broadcaster_finished = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=joint_state_broadcaster_spawner,
-            on_exit=[robot_controller_spawner, effort_controller_spawner]
+            on_exit=[
+                lower_body_controller_spawner, 
+                left_arm_controller_spawner, 
+                right_arm_controller_spawner,
+                left_wrist_controller_spawner, 
+                right_wrist_controller_spawner,
+                left_fingers_controller_spawner, 
+                right_fingers_controller_spawner
+            ]
         )
     )
 
     return LaunchDescription(
       [ 
-        DeclareLaunchArgument(
-            name="model",
-            default_value=model,
-            description="unitree robot model name",
-            choices=["h1", "a1", "b1"],
-        ),
+        model_arg,
+        gz_sim_resource_path,
+        gz_sim,
         robot_state_publisher_node,
-        gazebo,
         spawn_entity,
         spawn_entity_finished,
         joint_state_broadcaster_finished

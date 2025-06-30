@@ -10,4 +10,11 @@ install(
   DIRECTORY launch models rviz config
   DESTINATION share/${PROJECT_NAME}
 )
+
+install(
+  PROGRAMS
+    scripts/test_g1_control.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 ament_package()

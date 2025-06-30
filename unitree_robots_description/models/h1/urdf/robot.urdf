@@ -227,6 +227,13 @@
 
   </gazebo>
 
+  <link name="base_link"></link>
+  <joint name="floating_base_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="pelvis" />
+  </joint>
+
+
   <link
     name="pelvis">
     <inertial>
