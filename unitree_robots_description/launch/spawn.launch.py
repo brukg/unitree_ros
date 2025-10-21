@@ -40,15 +40,15 @@ def generate_launch_description():
     robot_urdf = PythonExpression([
         "'", pkg_share, "/models/g1/g1_29dof_with_control.urdf.xacro' if '", model, "' == 'g1' else '",
         pkg_share, "/models/g1/g1_simple_hand_with_control.urdf.xacro' if '", model, "' == 'g1_simple' else '",
-        pkg_share, "/models/", model, "/", model, ".urdf'"
+        pkg_share, "/models/h1/h1.urdf.xacro'"
     ])
     
-    # Control config path based on model  
-    control_config = PythonExpression([
-        "'", pkg_share, "/config/g1_control.yaml' if '", model, "' == 'g1' else '",
-        pkg_share, "/config/g1_simple_hand_control.yaml' if '", model, "' == 'g1_simple' else '",
-        pkg_share, "/config/", model, "_control.yaml'"
-    ])
+    # # Control config path based on model  
+    # control_config = PythonExpression([
+    #     "'", pkg_share, "/config/g1_control.yaml' if '", model, "' == 'g1' else '",
+    #     pkg_share, "/config/g1_simple_hand_control.yaml' if '", model, "' == 'g1_simple' else '",
+    #     pkg_share, "/config/", model, "_control.yaml'"
+    # ])
 
     desc = Command(["xacro ", robot_urdf])
 
@@ -86,6 +86,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(join(gz_sim_share, "launch", "gz_sim.launch.py")),
         launch_arguments={
             'gz_args': ["empty.sdf"," -r"],
+            'use_sim_time': 'True',
         }.items(),
     )
     
@@ -155,6 +156,12 @@ def generate_launch_description():
         condition=IfCondition(PythonExpression(["'", model, "' == 'g1_simple'"]))
     )
 
+    full_body_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["full_body_controller", "-c", "/controller_manager"],
+        condition=IfCondition(PythonExpression(["'", model, "' == 'h1'"]))
+    )
     # Event handlers for sequential controller spawning
     spawn_entity_finished = RegisterEventHandler(
         event_handler=OnProcessExit(
@@ -175,9 +182,25 @@ def generate_launch_description():
                 left_fingers_controller_spawner,      # G1 inspire hands
                 right_fingers_controller_spawner,     # G1 inspire hands
                 left_simple_hand_controller_spawner,  # G1 simple hands
-                right_simple_hand_controller_spawner  # G1 simple hands
+                right_simple_hand_controller_spawner,  # G1 simple hands
+                full_body_controller # H1
             ]
         )
+    )
+
+    gz_ros2_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        arguments=[
+            "/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist",
+            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
+            "/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry",
+            "/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V",
+            "/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan",
+            "/scan/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked",
+            "/imu@sensor_msgs/msg/Imu[gz.msgs.IMU",
+            # "/world/default/model/prometheus/joint_state@sensor_msgs/msg/JointState[gz.msgs.Model"
+        ]
     )
 
     return LaunchDescription(
@@ -188,6 +211,7 @@ def generate_launch_description():
         robot_state_publisher_node,
         spawn_entity,
         spawn_entity_finished,
-        joint_state_broadcaster_finished
+        joint_state_broadcaster_finished,
+        gz_ros2_bridge
       ]
     )

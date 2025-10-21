@@ -5,14 +5,14 @@ controller_manager:
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
     
-    joint_trajectory_controller:
+    full_body_controller:
       type: "joint_trajectory_controller/JointTrajectoryController"
 
     effort_controller:
       type: effort_controllers/JointGroupEffortController
 
 
-joint_trajectory_controller:
+full_body_controller:
   ros__parameters:  
     joints:
       # Leg joints (position control only)
@@ -27,6 +27,15 @@ joint_trajectory_controller:
       - right_knee_joint
       - right_ankle_joint
       - torso_joint
+      - left_shoulder_pitch_joint
+      - right_shoulder_pitch_joint
+      - left_shoulder_roll_joint
+      - right_shoulder_roll_joint
+      - left_shoulder_yaw_joint
+      - right_shoulder_yaw_joint
+      - left_elbow_joint
+      - right_elbow_joint
+
 
     command_interfaces:
       - position
@@ -40,20 +49,20 @@ joint_trajectory_controller:
 
     allow_partial_joints_goal: true
     open_loop_control: true
-    constraints:
-      goal_time: 0.0
-      # Leg constraints
-      left_hip_yaw_joint: {trajectory: 0.05, goal: 0.03}
-      left_hip_roll_joint: {trajectory: 0.05, goal: 0.03}
-      left_hip_pitch_joint: {trajectory: 0.05, goal: 0.03}
-      left_knee_joint: {trajectory: 0.05, goal: 0.03}
-      left_ankle_joint: {trajectory: 0.05, goal: 0.03}
-      right_hip_yaw_joint: {trajectory: 0.05, goal: 0.03}
-      right_hip_roll_joint: {trajectory: 0.05, goal: 0.03}
-      right_hip_pitch_joint: {trajectory: 0.05, goal: 0.03}
-      right_knee_joint: {trajectory: 0.05, goal: 0.03}
-      right_ankle_joint: {trajectory: 0.05, goal: 0.03}
-      torso_joint: {trajectory: 0.05, goal: 0.03}
+    # constraints:
+    #   goal_time: 0.0
+    #   # Leg constraints
+    #   left_hip_yaw_joint: {trajectory: 0.5, goal: 0.03}
+    #   left_hip_roll_joint: {trajectory: 0.5, goal: 0.03}
+    #   left_hip_pitch_joint: {trajectory: 0.5, goal: 0.03}
+    #   left_knee_joint: {trajectory: 0.5, goal: 0.03}
+    #   left_ankle_joint: {trajectory: 0.5, goal: 0.03}
+    #   right_hip_yaw_joint: {trajectory: 0.5, goal: 0.03}
+    #   right_hip_roll_joint: {trajectory: 0.5, goal: 0.03}
+    #   right_hip_pitch_joint: {trajectory: 0.5, goal: 0.03}
+    #   right_knee_joint: {trajectory: 0.5, goal: 0.03}
+    #   right_ankle_joint: {trajectory: 0.5, goal: 0.03}
+    #   torso_joint: {trajectory: 0.5, goal: 0.03}
 
 effort_controller:
   ros__parameters:

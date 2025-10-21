@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<robot name="h1" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Include the G1 model with inspire hands -->
+  <xacro:include filename="$(find unitree_robots_description)/models/h1/h1.urdf"/>
+  
+  <!-- Include the control configuration -->
+  <xacro:include filename="$(find unitree_robots_description)/models/h1/h1_control.xacro"/>
+
+  <gazebo>
+    <plugin
+        filename="libgz-sim-imu-system.so"
+        name="gz::sim::systems::Imu">
+    </plugin>
+  </gazebo>
+
+    <gazebo reference="imu_link">
+        <gravity>false</gravity>
+
+        <sensor name="imu_sensor" type="imu">
+            <always_on>1</always_on>
+            <gravity>false</gravity>
+            <update_rate>100</update_rate>
+            <gz_frame_id>imu_link</gz_frame_id>
+            <visualize>true</visualize>
+            <topic>imu</topic>
+        </sensor>
+    </gazebo>
+
+</robot> 
