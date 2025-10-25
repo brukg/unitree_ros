@@ -30,7 +30,7 @@ def generate_launch_description():
     # Launch arguments
     model_arg = DeclareLaunchArgument(
         name="model",
-        default_value="g1_simple",
+        default_value="g1",
         description="unitree robot model name",
         choices=["h1", "a1", "b1", "g1", "g1_simple"],
     )
